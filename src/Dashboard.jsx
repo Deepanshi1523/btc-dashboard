@@ -7,7 +7,7 @@ import { Moon, Sun } from "lucide-react";
 
 export default function Dashboard() {
   const { theme, toggleTheme } = useTheme();
-  const { data, status } = useBybitWS();
+  const { data, status, latency } = useBybitWS();
 
   // Sync theme with <html> class
   useEffect(() => {
@@ -63,7 +63,10 @@ export default function Dashboard() {
                   : "1px solid rgba(239, 68, 68, 0.3)",
             }}
           >
-            {status}
+            {status}{" "}
+            {latency !== null && status === "Connected"
+              ? `(${latency} ms)`
+              : ""}
           </span>
           <button
             onClick={toggleTheme}

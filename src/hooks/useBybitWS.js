@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export default function useBybitWS() {
   const [data, setData] = useState(null);
   const [status, setStatus] = useState("Disconnected");
+  const [latency, setLatency] = useState(null);
   const wsRef = useRef(null);
   const retryRef = useRef(0);
   const timerRef = useRef(null);
@@ -39,6 +40,10 @@ export default function useBybitWS() {
       if (json.topic === "tickers.BTCUSDT" && json.data) {
         clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(() => {
+          const serverTime = json.data.timestamp || json.ts;
+          const localTime = Date.now();
+          const delay = serverTime ? localTime - serverTime : 0;
+          setLatency(delay);
           setData((prev) => ({
             ...prev,
             ...json.data, // merge new updates with old full ticker
@@ -53,6 +58,12 @@ export default function useBybitWS() {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(connect, delay);
     };
+
+    // Disconnected → wait 1 s → retry
+    // Still fails → wait 2 s → retry
+    // Still fails → wait 4 s → retry
+    // ...
+    // Max wait → 30 s → retry until success
 
     ws.onerror = scheduleReconnect;
     ws.onclose = scheduleReconnect;
@@ -69,5 +80,5 @@ export default function useBybitWS() {
     };
   }, []);
 
-  return { data, status };
+  return { data, status, latency };
 }

@@ -416,7 +416,7 @@ export default function BTCStats({ data }) {
             <p style={{ fontSize: "0.75rem", color: getTextColor() }}>Live</p>
           </div>
         </div>
-        <Sparklines data={sparkData} width={280} height={30} margin={2}>
+        <Sparklines data={sparkData} width={280} height={130} margin={2}>
           <SparklinesLine
             color={isPositive ? "#10b981" : "#ef4444"}
             style={{ strokeWidth: 2 }}
