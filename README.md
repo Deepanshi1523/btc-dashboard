@@ -19,10 +19,13 @@ It also includes a **light/dark mode toggle** and smooth auto-reconnect without 
    cd btc-dashboard
 
 2. **Install dependencies**
+   ```bash
    npm install
 
-3. **Run the development server**
+4. **Run the development server**
+   ```bash
    npm run dev
 
-4. **Open in your browser**
+6. **Open in your browser**
+   ```bash
    http://localhost:5173
