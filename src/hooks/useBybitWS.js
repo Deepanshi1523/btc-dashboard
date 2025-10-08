@@ -1,4 +1,3 @@
-// hooks/useBybitWS.js
 import { useEffect, useRef, useState } from "react";
 
 export default function useBybitWS() {
@@ -9,10 +8,12 @@ export default function useBybitWS() {
   const timerRef = useRef(null);
   const debounceRef = useRef(null);
 
-  // ---- Fetch initial ticker data via REST ----
+  // ---- Fetch initial ticker data ----
   const fetchInitialData = async () => {
     try {
-      const res = await fetch("https://api.bybit.com/v5/market/tickers?category=linear&symbol=BTCUSDT");
+      const res = await fetch(
+        "https://api.bybit.com/v5/market/tickers?category=linear&symbol=BTCUSDT"
+      );
       const json = await res.json();
       if (json?.result?.list?.[0]) {
         setData(json.result.list[0]);
@@ -58,7 +59,7 @@ export default function useBybitWS() {
   };
 
   useEffect(() => {
-    fetchInitialData(); // fetch REST data first
+    fetchInitialData(); // fetch data first
     connect();
 
     return () => {

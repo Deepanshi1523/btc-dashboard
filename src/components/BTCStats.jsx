@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
-import { TrendingUp, TrendingDown, DollarSign, Activity } from "lucide-react";
-import { useTheme } from "../ThemeContext"; // Make sure to import useTheme
+import { DollarSign, Activity } from "lucide-react";
+import { useTheme } from "../ThemeContext";
 
 export default function BTCStats({ data }) {
-  const { theme } = useTheme(); // Get the current theme
+  const { theme } = useTheme();
   const [colorMap, setColorMap] = useState({
     last: "#6b7280",
     mark: "#6b7280",
-    high: "#6b7280", 
+    high: "#6b7280",
     low: "#6b7280",
     change: "#6b7280",
   });
@@ -28,33 +28,33 @@ export default function BTCStats({ data }) {
   // Define gradients based on theme
   const getBackgroundGradient = () => {
     if (theme === "dark") {
-      return "linear-gradient(to bottom right, #1e3b3bcc, rgba(39, 139, 136, 0.42))"; // slate-800
+      return "linear-gradient(to bottom right, #1e3b3bcc, rgba(39, 139, 136, 0.42))";
     } else {
-      return "linear-gradient(to bottom right, white, rgba(37, 120, 51, 0.54))"; // white
+      return "linear-gradient(to bottom right, white, rgba(37, 120, 51, 0.54))";
     }
   };
 
   const getCardBackground = () => {
     if (theme === "dark") {
-      return "rgba(30, 41, 59, 0.5)"; // dark card bg
+      return "rgba(30, 41, 59, 0.5)";
     } else {
-      return "rgba(249, 250, 251, 0.5)"; // light card bg
+      return "rgba(249, 250, 251, 0.5)";
     }
   };
 
   const getTextColor = () => {
     if (theme === "dark") {
-      return "#e5e7eb"; // light text for dark mode
+      return "#e5e7eb";
     } else {
-      return "#6b7280"; // gray text for light mode
+      return "#6b7280";
     }
   };
 
   const getBorderColor = () => {
     if (theme === "dark") {
-      return "rgba(75, 85, 99, 0.5)"; // gray-600 for dark
+      return "rgba(75, 85, 99, 0.5)";
     } else {
-      return "rgba(229, 231, 235, 0.5)"; // gray-200 for light
+      return "rgba(229, 231, 235, 0.5)";
     }
   };
 
@@ -68,13 +68,13 @@ export default function BTCStats({ data }) {
       high: parseFloat(data.highPrice24h) || stats.high,
       low: parseFloat(data.lowPrice24h) || stats.low,
       vol: parseFloat(data.turnover24h) || stats.vol,
-      change: (parseFloat(data.price24hPcnt) * 100) || stats.change,
+      change: parseFloat(data.price24hPcnt) * 100 || stats.change,
     };
 
     // Update colors based on trend
     const newColors = { ...colorMap };
     for (let key of Object.keys(parsed)) {
-      if (key !== 'vol') {
+      if (key !== "vol") {
         if (parsed[key] > prevStats.current[key]) {
           newColors[key] = "#10b981"; // green-500
         } else if (parsed[key] < prevStats.current[key]) {
@@ -88,7 +88,7 @@ export default function BTCStats({ data }) {
     prevStats.current = parsed;
   }, [data]);
 
-  // ---- Sparkline (price movement) ----
+  // ---- Sparkline ----
   useEffect(() => {
     if (data?.lastPrice) {
       const price = parseFloat(data.lastPrice);
@@ -103,27 +103,33 @@ export default function BTCStats({ data }) {
 
   if (!data) {
     return (
-      <div style={{
-        borderRadius: '16px',
-        padding: '24px',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-        background: getBackgroundGradient(),
-        backdropFilter: 'blur(8px)',
-        border: `1px solid ${getBorderColor()}`,
-        transition: 'all 0.3s ease',
-        height: '100%'
-      }}>
-        <div style={{ 
-          animation: 'pulse 2s infinite',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '128px'
-        }}>
+      <div
+        style={{
+          borderRadius: "16px",
+          padding: "24px",
+          boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+          textAlign: "center",
+          background: getBackgroundGradient(),
+          backdropFilter: "blur(8px)",
+          border: `1px solid ${getBorderColor()}`,
+          transition: "all 0.3s ease",
+          height: "100%",
+        }}
+      >
+        <div
+          style={{
+            animation: "pulse 2s infinite",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "128px",
+          }}
+        >
           <Activity size={32} color={getTextColor()} />
-          <p style={{ color: getTextColor(), marginTop: '8px' }}>Connecting to ByBit...</p>
+          <p style={{ color: getTextColor(), marginTop: "8px" }}>
+            Connecting to ByBit...
+          </p>
         </div>
       </div>
     );
@@ -133,154 +139,306 @@ export default function BTCStats({ data }) {
   const isPositive = change >= 0;
 
   return (
-    <div style={{
-      borderRadius: '16px',
-      padding: '24px',
-      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-      transition: 'all 0.3s ease',
-      background: getBackgroundGradient(),
-      backdropFilter: 'blur(8px)',
-      height: '100%',
-      border: `1px solid ${getBorderColor()}`
-    }}>
+    <div
+      style={{
+        borderRadius: "16px",
+        padding: "24px",
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+        transition: "all 0.3s ease",
+        background: getBackgroundGradient(),
+        backdropFilter: "blur(8px)",
+        height: "100%",
+        border: `1px solid ${getBorderColor()}`,
+      }}
+    >
       {/* Header Row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <div style={{
-          padding: '8px',
-          background: 'linear-gradient(to right, #f97316, #f59e0b)',
-          borderRadius: '12px'
-        }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          marginBottom: "24px",
+        }}
+      >
+        <div
+          style={{
+            padding: "8px",
+            background: "linear-gradient(to right, #f97316, #f59e0b)",
+            borderRadius: "12px",
+          }}
+        >
           <DollarSign size={20} color="white" />
         </div>
         <div>
-          <h2 style={{
-            fontSize: '1.25rem',
-            fontWeight: 'bold',
-            color: theme === 'dark' ? '#f9fafb' : '#1f2937' // white for dark, gray-900 for light
-          }}>
+          <h2
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: "bold",
+              color: theme === "dark" ? "#f9fafb" : "#1f2937", // white for dark, gray-900 for light
+            }}
+          >
             BTC/USDT Live Statistics
           </h2>
         </div>
       </div>
 
       {/* 24H Change Row */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 0',
-        borderBottom: `1px solid ${getBorderColor()}`
-      }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: getTextColor() }}>24H Change:</span>
-        <span style={{ fontSize: '0.875rem', fontWeight: '600', color: colorMap.change }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 0",
+          borderBottom: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            color: getTextColor(),
+          }}
+        >
+          24H Change:
+        </span>
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: colorMap.change,
+          }}
+        >
           {change.toFixed(2)}%
         </span>
       </div>
 
       {/* LTP Row */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 0',
-        borderBottom: `1px solid ${getBorderColor()}`
-      }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: getTextColor() }}>LTP:</span>
-        <span style={{ fontSize: '0.875rem', fontWeight: '600', color: colorMap.last }}>
-          ${last.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 0",
+          borderBottom: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            color: getTextColor(),
+          }}
+        >
+          LTP:
+        </span>
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: colorMap.last,
+          }}
+        >
+          $
+          {last.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
       </div>
 
       {/* Mark Price Row */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 0',
-        borderBottom: `1px solid ${getBorderColor()}`
-      }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: getTextColor() }}>Mark Price:</span>
-        <span style={{ fontSize: '0.875rem', fontWeight: '600', color: colorMap.mark }}>
-          ${mark.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 0",
+          borderBottom: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            color: getTextColor(),
+          }}
+        >
+          Mark Price:
+        </span>
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: colorMap.mark,
+          }}
+        >
+          $
+          {mark.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
       </div>
 
       {/* 24H High Row */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 0',
-        borderBottom: `1px solid ${getBorderColor()}`
-      }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: getTextColor() }}>24H High:</span>
-        <span style={{ fontSize: '0.875rem', fontWeight: '600', color: colorMap.high }}>
-          ${high.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 0",
+          borderBottom: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            color: getTextColor(),
+          }}
+        >
+          24H High:
+        </span>
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: colorMap.high,
+          }}
+        >
+          $
+          {high.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
       </div>
 
       {/* 24H Low Row */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 0',
-        borderBottom: `1px solid ${getBorderColor()}`
-      }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: getTextColor() }}>24H Low:</span>
-        <span style={{ fontSize: '0.875rem', fontWeight: '600', color: colorMap.low }}>
-          ${low.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 0",
+          borderBottom: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            color: getTextColor(),
+          }}
+        >
+          24H Low:
+        </span>
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: colorMap.low,
+          }}
+        >
+          $
+          {low.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
       </div>
 
       {/* 24H Volume Row */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 0'
-      }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: getTextColor() }}>24H Volume:</span>
-        <span style={{ fontSize: '0.875rem', fontWeight: '600', color: getTextColor() }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 0",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            color: getTextColor(),
+          }}
+        >
+          24H Volume:
+        </span>
+        <span
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: getTextColor(),
+          }}
+        >
           {(vol / 1000000).toFixed(2)}M
         </span>
       </div>
 
       {/* Sparkline Chart */}
-      <div style={{
-        marginTop: '16px',
-        padding: '12px',
-        backgroundColor: getCardBackground(),
-        borderRadius: '12px',
-        border: `1px solid ${getBorderColor()}`
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: '500', color: getTextColor() }}>Price Movement</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <div style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: isPositive ? '#10b981' : '#ef4444'
-            }}></div>
-            <p style={{ fontSize: '0.75rem', color: getTextColor() }}>Live</p>
+      <div
+        style={{
+          marginTop: "16px",
+          padding: "12px",
+          backgroundColor: getCardBackground(),
+          borderRadius: "12px",
+          border: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "8px",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: "500",
+              color: getTextColor(),
+            }}
+          >
+            Price Movement
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: isPositive ? "#10b981" : "#ef4444",
+              }}
+            ></div>
+            <p style={{ fontSize: "0.75rem", color: getTextColor() }}>Live</p>
           </div>
         </div>
         <Sparklines data={sparkData} width={280} height={30} margin={2}>
-          <SparklinesLine 
-            color={isPositive ? "#10b981" : "#ef4444"} 
+          <SparklinesLine
+            color={isPositive ? "#10b981" : "#ef4444"}
             style={{ strokeWidth: 2 }}
           />
         </Sparklines>
       </div>
 
       {/* Last Update */}
-      <div style={{
-        marginTop: '12px',
-        paddingTop: '12px',
-        borderTop: `1px solid ${getBorderColor()}`
-      }}>
-        <p style={{ fontSize: '0.75rem', color: getTextColor(), textAlign: 'center' }}>
+      <div
+        style={{
+          marginTop: "12px",
+          paddingTop: "12px",
+          borderTop: `1px solid ${getBorderColor()}`,
+        }}
+      >
+        <p
+          style={{
+            fontSize: "0.75rem",
+            color: getTextColor(),
+            textAlign: "center",
+          }}
+        >
           Updated {new Date().toLocaleTimeString()}
         </p>
       </div>
