@@ -93,19 +93,23 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Content */}
+            {/* Content */}
       <main
         style={{
-          padding: "24px",
           display: "flex",
+          flexWrap: "wrap", // ✅ allows stacking on small screens
           gap: "24px",
-          height: "calc(100vh - 80px)",
+          padding: "24px",
+          minHeight: "calc(100vh - 80px)",
+          transition: "all 0.3s ease",
         }}
       >
         {/* Left panel: BTCStats */}
         <div
           style={{
-            width: "25%",
+            flex: "1 1 350px", // flexible layout
+            minWidth: "320px", // prevents squishing
+            maxWidth: "450px", // keeps proportion on large screens
             borderRadius: "16px",
             border: "1px solid rgba(55, 65, 81, 0.2)",
             padding: "16px",
@@ -115,8 +119,9 @@ export default function Dashboard() {
               theme === "dark"
                 ? "rgba(31, 41, 55, 0.3)"
                 : "rgba(255, 255, 255, 0.1)",
-            height: "100%",
+            height: "auto",
             transition: "background-color 0.4s ease, color 0.4s ease",
+            flexBasis: "25%", // desktop width
           }}
         >
           <BTCStats data={data} />
@@ -125,7 +130,8 @@ export default function Dashboard() {
         {/* Right panel: TradingViewChart */}
         <div
           style={{
-            width: "75%",
+            flex: "3 1 600px",
+            minWidth: "320px",
             borderRadius: "16px",
             overflow: "hidden",
             boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
@@ -134,13 +140,32 @@ export default function Dashboard() {
               theme === "dark"
                 ? "rgba(31, 41, 55, 0.3)"
                 : "rgba(255, 255, 255, 0.1)",
-            height: "100%",
+            height: "auto",
             transition: "background-color 0.4s ease, color 0.4s ease",
+            flexBasis: "75%", // desktop width
           }}
         >
           <TradingViewChart theme={theme} />
         </div>
+
+        {/* Responsive behavior */}
+        <style>
+          {`
+            @media (max-width: 1024px) {
+              main {
+                flex-direction: column;
+                align-items: center;
+              }
+              main > div {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+              }
+            }
+          `}
+        </style>
       </main>
+
     </div>
   );
 }
