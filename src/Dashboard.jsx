@@ -28,10 +28,9 @@ export default function Dashboard() {
       <header
         style={{
           display: "flex",
-          flexWrap: "wrap", // allow wrapping on mobile
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "16px 20px",
+          padding: "20px 30px",
           borderBottom: "1px solid rgba(55, 65, 81, 0.3)",
           backdropFilter: "blur(8px)",
           transition: "all 0.3s ease",
@@ -39,28 +38,18 @@ export default function Dashboard() {
       >
         <h1
           style={{
-            fontSize: "1.4rem",
+            fontSize: "1.5rem",
             fontWeight: "bold",
             letterSpacing: "-0.025em",
-            flex: "1 1 auto",
           }}
         >
           BTC Dashboard
         </h1>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "12px",
-            marginTop: "8px",
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <span
             style={{
-              fontSize: "0.8rem",
-              padding: "4px 10px",
+              fontSize: "0.875rem",
+              padding: "4px 12px",
               borderRadius: "9999px",
               fontWeight: "500",
               backgroundColor:
@@ -74,12 +63,11 @@ export default function Dashboard() {
                   : "1px solid rgba(239, 68, 68, 0.3)",
             }}
           >
-            {status}
+            {status}{" "}
             {latency !== null && status === "Connected"
-              ? ` (${latency} ms)`
+              ? `(${latency} ms)`
               : ""}
           </span>
-
           <button
             onClick={toggleTheme}
             style={{
@@ -87,8 +75,9 @@ export default function Dashboard() {
               borderRadius: "8px",
               border: "1px solid rgba(107, 114, 128, 0.3)",
               transition: "all 0.3s ease",
+              marginLeft: "40px",
               backgroundColor: theme === "dark" ? "transparent" : "#000000",
-              color: "white",
+              color: theme === "dark" ? "white" : "white",
             }}
             onMouseEnter={(e) => {
               e.target.style.backgroundColor =
@@ -107,19 +96,16 @@ export default function Dashboard() {
       {/* Content */}
       <main
         style={{
+          padding: "24px",
           display: "flex",
-          flexWrap: "wrap", // ✅ enables stacking on small screens
-          gap: "20px",
-          padding: "16px",
-          boxSizing: "border-box",
-          height: "auto",
+          gap: "24px",
+          height: "calc(100vh - 80px)",
         }}
       >
-        {/* BTC Stats Card */}
+        {/* Left panel: BTCStats */}
         <div
           style={{
-            flex: "1 1 350px", // flexible width with min size
-            minWidth: "320px",
+            width: "25%",
             borderRadius: "16px",
             border: "1px solid rgba(55, 65, 81, 0.2)",
             padding: "16px",
@@ -128,20 +114,18 @@ export default function Dashboard() {
             backgroundColor:
               theme === "dark"
                 ? "rgba(31, 41, 55, 0.3)"
-                : "rgba(255, 255, 255, 0.4)",
+                : "rgba(255, 255, 255, 0.1)",
+            height: "100%",
             transition: "background-color 0.4s ease, color 0.4s ease",
-            flexBasis: "100%",
-            maxHeight: "auto",
           }}
         >
           <BTCStats data={data} />
         </div>
 
-        {/* TradingView Chart */}
+        {/* Right panel: TradingViewChart */}
         <div
           style={{
-            flex: "3 1 600px",
-            minWidth: "340px",
+            width: "75%",
             borderRadius: "16px",
             overflow: "hidden",
             boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
@@ -149,9 +133,9 @@ export default function Dashboard() {
             backgroundColor:
               theme === "dark"
                 ? "rgba(31, 41, 55, 0.3)"
-                : "rgba(255, 255, 255, 0.4)",
-            height: "auto",
-            flexBasis: "100%",
+                : "rgba(255, 255, 255, 0.1)",
+            height: "100%",
+            transition: "background-color 0.4s ease, color 0.4s ease",
           }}
         >
           <TradingViewChart theme={theme} />
